@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EduLink — Recovery</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="session.html">My Session</a>
+      </nav>
+
+      <h1 class="logo">EduLink Network</h1>
+      <p class="tagline">Fast. Affordable. MAU's Own Internet.</p>
+
+      <h2>Session Recovery</h2>
+      <p style="color:#aaaaaa; font-size:13px;">Paid but not connected? Enter your transaction reference below.</p>
+
+      <input type="text" id="recovery-ref" placeholder="e.g. EDU-123456">
+      <button onclick="recoverSession()">Recover Session</button>
+
+      <p id="recovery-message"></p>
+
+      <p><a href="index.html">← Go Back</a></p>
+
+      <p class="whatsapp" onclick="openWhatsApp()">Need help? WhatsApp us</p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script.js"></script>
+
+  </body>
+</html>

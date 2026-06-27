@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EduLink — Session</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="session.html">My Session</a>
+      </nav>
+
+      <h1 class="logo">EduLink Network</h1>
+      <p class="tagline">Fast. Affordable. Unlimited.</p>
+
+      <h2 id="session-heading">Session Status</h2>
+
+      <p id="session-status" class="status-inactive">● Session Inactive</p>
+
+      <div class="plan-summary">
+        <p id="session-plan"></p>
+        <p id="session-hostel"></p>
+      </div>
+
+      <h2>Time Remaining</h2>
+      <p id="countdown" class="timer">--:--:--</p>
+
+      <div class="marquee-box">
+        <p id="session-prompt" class="marquee-text"></p>
+      </div>
+
+      <button id="disconnect-btn" onclick="disconnectSession()" style="display:none;">Disconnect</button>
+
+      <p class="whatsapp" onclick="openWhatsApp()">Need help? WhatsApp us</p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script.js"></script>
+    <script>
+      loadSessionPage();
+    </script>
+
+  </body>
+</html>

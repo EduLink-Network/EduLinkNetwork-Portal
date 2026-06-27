@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EduLink — Payment</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="session.html">My Session</a>
+      </nav>
+
+      <h1 class="logo">EduLink Network</h1>
+      <p class="tagline">Fast. Affordable. MAU's Own Internet.</p>
+
+      <h2>Confirm Your Plan</h2>
+
+      <div class="plan-summary">
+        <p id="selected-plan"></p>
+        <p id="selected-hostel"></p>
+        <p id="selected-amount"></p>
+      </div>
+
+      <input type="email" id="student-email" placeholder="Enter your email address">
+
+      <button id="pay-button" onclick="payWithPaystack()">Pay with Paystack</button>
+
+      <p><a href="index.html">← Go Back</a></p>
+
+      <p class="whatsapp" onclick="openWhatsApp()">Need help? WhatsApp us</p>
+
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script.js"></script>
+    <script>
+      loadPaymentPage();
+    </script>
+
+  </body>
+</html>

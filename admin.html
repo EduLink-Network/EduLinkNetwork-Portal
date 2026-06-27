@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EduLink — Admin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <h1 class="logo">EduLink Admin</h1>
+      <p class="tagline">Dashboard — Authorized Access Only</p>
+
+      <div id="login-section">
+        <h2>Enter Password</h2>
+        <input type="password" id="admin-password" placeholder="Enter password">
+        <button onclick="adminLogin()">Login</button>
+        <p><a href="index.html">← Back to Portal</a></p>
+      </div>
+
+      <div id="dashboard-section" style="display:none;">
+
+        <h2>Hostel Performance</h2>
+
+        <div class="hostel-card">
+          <h3>New Male Hostel</h3>
+          <p id="male-sessions">Sessions: 0</p>
+          <p id="male-revenue">Revenue: ₦0</p>
+        </div>
+
+        <div class="hostel-card">
+          <h3>New Female Hostel</h3>
+          <p id="female-sessions">Sessions: 0</p>
+          <p id="female-revenue">Revenue: ₦0</p>
+        </div>
+
+        <div class="hostel-card">
+          <h3>Abuja Hostel</h3>
+          <p id="abuja-sessions">Sessions: 0</p>
+          <p id="abuja-revenue">Revenue: ₦0</p>
+        </div>
+
+        <div class="hostel-card">
+          <h3>Nana Hostel</h3>
+          <p id="nana-sessions">Sessions: 0</p>
+          <p id="nana-revenue">Revenue: ₦0</p>
+        </div>
+
+        <h2>Recent Transactions</h2>
+        <div id="transactions"></div>
+
+        <button onclick="adminLogout()">Logout</button>
+
+      </div>
+
+    </div>
+
+    <script>
+      function adminLogin() {
+        var password = document.getElementById("admin-password").value;
+      
+        if (password === "EduLink2024") {
+          document.getElementById("login-section").style.display = "none";
+          document.getElementById("dashboard-section").style.display = "block";
+        } else {
+          alert("Incorrect password. Access denied.");
+          document.getElementById("admin-password").value = "";
+        }
+      }
+      
+      function adminLogout() {
+        document.getElementById("dashboard-section").style.display = "none";
+        document.getElementById("login-section").style.display = "block";
+        document.getElementById("admin-password").value = "";
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

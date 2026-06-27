@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>EduLink — Payment Successful</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="session.html">My Session</a>
+      </nav>
+
+      <h1 class="logo">EduLink Network</h1>
+      <p class="tagline">Fast. Affordable. MAU's Own Internet.</p>
+
+      <h2>Payment Successful</h2>
+
+      <p class="status-active">● You're Connected</p>
+
+      <div class="plan-summary">
+        <p id="success-plan"></p>
+        <p id="success-hostel"></p>
+        <p id="success-amount"></p>
+        <p id="success-ref"></p>
+      </div>
+
+      <div class="success-message">
+        <p>Your internet access is now active.</p>
+        <p>You can start browsing immediately.</p>
+      </div>
+
+      <button onclick="window.location.href='session.html'">View My Session</button>
+
+      <p class="whatsapp" onclick="openWhatsApp()">Need help? WhatsApp us</p>
+      <p><a href="recover.html" style="color:#aaaaaa; font-size:12px;">Paid but not connected? Click here</a></p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./script.js"></script>
+    <script>
+      loadSuccessPage();
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,229 @@
+body {
+  background-color: #0a0a2e;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 15px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 28px;
+  color: #00d4ff;
+  margin-bottom: 5px;
+}
+
+h2 {
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+h3 {
+  font-size: 16px;
+  color: #00d4ff;
+  margin-bottom: 5px;
+}
+
+button {
+  background-color: #00d4ff;
+  color: #0a0a2e;
+  border: none;
+  padding: 10px 25px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+  width: 100%;
+  max-width: 250px;
+}
+select {
+  background-color: #1a1a4e;
+  color: white;
+  border: 2px solid #00d4ff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 250px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+input {
+  background-color: #1a1a4e;
+  color: white;
+  border: 2px solid #00d4ff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 250px;
+  margin: 8px;
+  box-sizing: border-box;
+}
+
+p {
+  color: #aaaaaa;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+a {
+  text-decoration: none;
+  color: #00d4ff;
+}
+
+.container {
+  background-color: #12124a;
+  max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px 25px;
+  border-radius: 16px;
+  border: 1px solid #00d4ff;
+  box-sizing: border-box;
+}
+button:hover {
+  background-color: #0099bb;
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+select:hover {
+  border-color: #0099bb;
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #00d4ff;
+  letter-spacing: 2px;
+  margin-bottom: 3px;
+  margin-top: 5px;
+}
+
+.tagline {
+  font-size: 12px;
+  color: #aaaaaa;
+  margin-bottom: 10px;
+}
+.whatsapp {
+  color: #25d366;
+  font-size: 14px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.whatsapp:hover {
+  text-decoration: underline;
+}
+
+.plan-summary {
+  background-color: #1a1a4e;
+  border: 1px solid #00d4ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.plan-summary p {
+  color: white;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.status-active {
+  color: #25d366;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.timer {
+  font-size: 36px;
+  font-weight: bold;
+  color: #00d4ff;
+  letter-spacing: 3px;
+}
+
+.hostel-card {
+  background-color: #1a1a4e;
+  border: 1px solid #00d4ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.hostel-card p {
+  color: #aaaaaa;
+  font-size: 14px;
+  margin: 3px 0;
+}
+
+#transactions {
+  background-color: #1a1a4e;
+  border: 1px solid #00d4ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: left;
+  font-size: 13px;
+  color: #aaaaaa;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #00d4ff;
+  font-size: 13px;
+  padding: 6px 14px;
+  border: 1px solid #00d4ff;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background-color: #00d4ff;
+  color: #0a0a2e;
+}
+.marquee-box {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-top: 10px;
+}
+
+.marquee-text {
+  display: inline-block;
+  animation: marquee 8s linear infinite;
+  color: #00d4ff;
+  font-size: 13px;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+.success-message {
+  background-color: #1a1a4e;
+  border: 1px solid #25d366;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.success-message p {
+  color: #25d366;
+  font-size: 14px;
+  margin: 5px 0;
+}
