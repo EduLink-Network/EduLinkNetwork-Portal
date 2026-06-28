@@ -112,16 +112,21 @@ function payWithPaystack() {
       sessionStorage.setItem("hostel", confirmedHostel);
       sessionStorage.setItem("paymentRef", response.reference);
 
-      supabase.from('transactions').insert({
-        hostel: confirmedHostel,
-        plan: confirmedPlan,
-        amount: parseInt(confirmedAmount),
-        payment_type: 'paystack',
-        reference: response.reference
-      }).then(function(result) {
-        console.log("Supabase insert result:", result);
-        window.location.href = "success.html";
-      });
+      fetch("https://edulink-backend-yccm.onrender.com/log-transaction", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    hostel: confirmedHostel,
+    plan: confirmedPlan,
+    amount: parseInt(confirmedAmount),
+    payment_type: 'paystack',
+    reference: response.reference
+  })
+}).then(function() {
+  window.location.href = "success.html";
+});
     },
     onClose: function() {
       alert("Payment cancelled");
