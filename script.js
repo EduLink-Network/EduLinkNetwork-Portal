@@ -1,8 +1,3 @@
-// Initialize Supabase
-var supabaseUrl = "https://wijqrrecsvxdrwdpbbww.supabase.co";
-var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpanFycmVjc3Z4ZHJ3ZHBiYnd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MjI1MTMsImV4cCI6MjA5Nzk5ODUxM30.cxi-st7EsjKIscg0Gjr84ysUhLnRoIYJ16bZy6KewKQ";
-var supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
 // WhatsApp number
 var whatsappNumber = "2347087042035";
 
@@ -40,46 +35,32 @@ async function connectVoucher() {
     return;
   }
 
-  const { data, error } = await supabase
-    .from('vouchers')
-    .select('*')
-    .eq('code', code)
-    .single();
-
-  if (error || !data) {
-    alert("Invalid voucher code. Please check and try again.");
-    return;
-  }
-
-  if (data.used === true) {
-    alert("This voucher has already been used. Please purchase a new plan.");
-    return;
-  }
-
-  await supabase
-    .from('vouchers')
-    .update({ used: true, hostel: hostel })
-    .eq('code', code);
-
-  await supabase
-    .from('transactions')
-    .insert({
-      hostel: hostel,
-      plan: data.plan,
-      amount: data.amount,
-      payment_type: 'voucher',
-      reference: code
+  try {
+    const response = await fetch("https://edulink-backend-yccm.onrender.com/validate-voucher", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ code: code, hostel: hostel })
     });
 
-  // Clear everything first
-  sessionStorage.clear();
+    const result = await response.json();
 
-  // Save confirmed session
-  sessionStorage.setItem("plan", data.plan);
-  sessionStorage.setItem("amount", data.amount);
-  sessionStorage.setItem("hostel", hostel);
+    if (!result.success) {
+      alert(result.message);
+      return;
+    }
 
-  window.location.href = "session.html";
+    sessionStorage.clear();
+    sessionStorage.setItem("plan", result.plan);
+    sessionStorage.setItem("amount", result.amount);
+    sessionStorage.setItem("hostel", result.hostel);
+
+    window.location.href = "session.html";
+
+  } catch (error) {
+    alert("Could not connect to server. Please try again.");
+  }
 }
 
 // Page 2 — Load payment summary
@@ -114,7 +95,7 @@ function payWithPaystack() {
 
   var handler = PaystackPop.setup({
     key: "pk_test_2ad9a4e8f096ce60d4baca9c0995add3dd1306bd",
-    email: document.getElementById("student-email").value || "student@edulink.com",
+    email: "student+" + Math.floor(Math.random() * 1000000) + "@edulink.com",
     amount: amount * 100,
     currency: "NGN",
     ref: "EDU-" + Math.floor(Math.random() * 1000000),
@@ -131,7 +112,6 @@ function payWithPaystack() {
       sessionStorage.setItem("hostel", confirmedHostel);
       sessionStorage.setItem("paymentRef", response.reference);
 
-      // Log transaction separately
       supabase.from('transactions').insert({
         hostel: confirmedHostel,
         plan: confirmedPlan,
@@ -242,52 +222,39 @@ function adminLogin() {
 
 // Page 4 — Load dashboard
 async function loadDashboard() {
-  const { data, error } = await supabase
-    .from('transactions')
-    .select('*');
+  try {
+    const response = await fetch("https://edulink-backend-yccm.onrender.com/dashboard");
+    const data = await response.json();
 
-  if (error || !data) {
-    document.getElementById("transactions").innerHTML =
-      "<p>Error loading data. Please refresh.</p>";
-    return;
-  }
-
-  var hostels = {
-    "new-male": { name: "New Male Hostel", sessions: 0, revenue: 0 },
-    "new-female": { name: "New Female Hostel", sessions: 0, revenue: 0 },
-    "abuja": { name: "Abuja Hostel", sessions: 0, revenue: 0 },
-    "nana": { name: "Nana Hostel", sessions: 0, revenue: 0 }
-  };
-
-  data.forEach(function(t) {
-    if (hostels[t.hostel]) {
-      hostels[t.hostel].sessions += 1;
-      hostels[t.hostel].revenue += t.amount;
+    if (!data.success) {
+      document.getElementById("transactions").innerHTML = "<p>Error loading data.</p>";
+      return;
     }
-  });
 
-  document.getElementById("male-sessions").textContent = "Sessions: " + hostels["new-male"].sessions;
-  document.getElementById("male-revenue").textContent = "Revenue: ₦" + hostels["new-male"].revenue.toLocaleString();
-  document.getElementById("female-sessions").textContent = "Sessions: " + hostels["new-female"].sessions;
-  document.getElementById("female-revenue").textContent = "Revenue: ₦" + hostels["new-female"].revenue.toLocaleString();
-  document.getElementById("abuja-sessions").textContent = "Sessions: " + hostels["abuja"].sessions;
-  document.getElementById("abuja-revenue").textContent = "Revenue: ₦" + hostels["abuja"].revenue.toLocaleString();
-  document.getElementById("nana-sessions").textContent = "Sessions: " + hostels["nana"].sessions;
-  document.getElementById("nana-revenue").textContent = "Revenue: ₦" + hostels["nana"].revenue.toLocaleString();
+    document.getElementById("male-sessions").textContent = "Sessions: " + data.hostels["new-male"].sessions;
+    document.getElementById("male-revenue").textContent = "Revenue: ₦" + data.hostels["new-male"].revenue.toLocaleString();
+    document.getElementById("female-sessions").textContent = "Sessions: " + data.hostels["new-female"].sessions;
+    document.getElementById("female-revenue").textContent = "Revenue: ₦" + data.hostels["new-female"].revenue.toLocaleString();
+    document.getElementById("abuja-sessions").textContent = "Sessions: " + data.hostels["abuja"].sessions;
+    document.getElementById("abuja-revenue").textContent = "Revenue: ₦" + data.hostels["abuja"].revenue.toLocaleString();
+    document.getElementById("nana-sessions").textContent = "Sessions: " + data.hostels["nana"].sessions;
+    document.getElementById("nana-revenue").textContent = "Revenue: ₦" + data.hostels["nana"].revenue.toLocaleString();
 
-  var html = "";
-  var recent = data.slice(-10).reverse();
+    var html = "";
+    data.transactions.forEach(function(t) {
+      html += "<div style='border-bottom: 1px solid #00d4ff; padding: 8px 0;'>";
+      html += "<p style='color:white; margin:2px 0;'>" + t.plan + "</p>";
+      html += "<p style='margin:2px 0;'>Hostel: " + t.hostel + "</p>";
+      html += "<p style='margin:2px 0;'>Amount: ₦" + t.amount + " — " + t.payment_type + "</p>";
+      html += "<p style='margin:2px 0; font-size:11px;'>Ref: " + t.reference + "</p>";
+      html += "</div>";
+    });
 
-  recent.forEach(function(t) {
-    html += "<div style='border-bottom: 1px solid #00d4ff; padding: 8px 0;'>";
-    html += "<p style='color:white; margin:2px 0;'>" + t.plan + "</p>";
-    html += "<p style='margin:2px 0;'>Hostel: " + t.hostel + "</p>";
-    html += "<p style='margin:2px 0;'>Amount: ₦" + t.amount + " — " + t.payment_type + "</p>";
-    html += "<p style='margin:2px 0; font-size:11px;'>Ref: " + t.reference + "</p>";
-    html += "</div>";
-  });
+    document.getElementById("transactions").innerHTML = html || "<p>No transactions yet.</p>";
 
-  document.getElementById("transactions").innerHTML = html || "<p>No transactions yet.</p>";
+  } catch (error) {
+    document.getElementById("transactions").innerHTML = "<p>Error loading dashboard.</p>";
+  }
 }
 
 // Page 4 — Logout
@@ -297,6 +264,7 @@ function adminLogout() {
   document.getElementById("admin-password").value = "";
 }
 
+// Success page
 function loadSuccessPage() {
   var plan = sessionStorage.getItem("plan");
   var hostel = sessionStorage.getItem("hostel");
@@ -311,9 +279,9 @@ function loadSuccessPage() {
   }
 }
 
+// Recovery page
 async function recoverSession() {
   var ref = document.getElementById("recovery-ref").value.trim().toUpperCase();
-  var hostel = document.querySelector('select') ? document.querySelector('select').value : "";
   var message = document.getElementById("recovery-message");
 
   if (ref === "") {
@@ -325,29 +293,38 @@ async function recoverSession() {
   message.textContent = "Checking your transaction...";
   message.style.color = "#00d4ff";
 
-  const { data, error } = await supabase
-    .from('transactions')
-    .select('*')
-    .eq('reference', ref)
-    .single();
+  try {
+    const response = await fetch("https://edulink-backend-yccm.onrender.com/recover-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ reference: ref })
+    });
 
-  if (error || !data) {
-    message.textContent = "No transaction found with this reference. Please contact support.";
+    const result = await response.json();
+
+    if (!result.success) {
+      message.textContent = "No transaction found. Please contact support via WhatsApp.";
+      message.style.color = "#ff4444";
+      return;
+    }
+
+    sessionStorage.clear();
+    sessionStorage.setItem("plan", result.plan);
+    sessionStorage.setItem("amount", result.amount);
+    sessionStorage.setItem("hostel", result.hostel);
+    sessionStorage.setItem("paymentRef", ref);
+
+    message.textContent = "Session restored. Redirecting...";
+    message.style.color = "#25d366";
+
+    setTimeout(function() {
+      window.location.href = "session.html";
+    }, 2000);
+
+  } catch (error) {
+    message.textContent = "Could not connect to server. Please try again.";
     message.style.color = "#ff4444";
-    return;
   }
-
-  // Transaction found — restore session
-  sessionStorage.clear();
-  sessionStorage.setItem("plan", data.plan);
-  sessionStorage.setItem("amount", data.amount);
-  sessionStorage.setItem("hostel", data.hostel);
-  sessionStorage.setItem("paymentRef", ref);
-
-  message.textContent = "Session restored successfully. Redirecting...";
-  message.style.color = "#25d366";
-
-  setTimeout(function() {
-    window.location.href = "session.html";
-  }, 2000);
 }
