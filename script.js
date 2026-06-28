@@ -179,25 +179,35 @@ function loadSessionPage() {
 
 // Page 3 — Countdown timer
 function startCountdown(hours) {
-  var totalSeconds = hours * 3600;
+  // Check if end time already exists
+  var endTime = sessionStorage.getItem("session_end_time");
+
+  if (!endTime) {
+    // First time — calculate and save end time
+    endTime = new Date().getTime() + (hours * 3600 * 1000);
+    sessionStorage.setItem("session_end_time", endTime);
+  }
 
   var interval = setInterval(function() {
-    if (totalSeconds <= 0) {
+    var now = new Date().getTime();
+    var remaining = endTime - now;
+
+    if (remaining <= 0) {
       clearInterval(interval);
       document.getElementById("countdown").textContent = "00:00:00";
+      sessionStorage.clear();
       alert("Your session has ended. Please purchase a new plan.");
       window.location.href = "index.html";
       return;
     }
 
-    var h = Math.floor(totalSeconds / 3600);
-    var m = Math.floor((totalSeconds % 3600) / 60);
-    var s = totalSeconds % 60;
+    var h = Math.floor(remaining / (1000 * 3600));
+    var m = Math.floor((remaining % (1000 * 3600)) / (1000 * 60));
+    var s = Math.floor((remaining % (1000 * 60)) / 1000);
 
     document.getElementById("countdown").textContent =
       pad(h) + ":" + pad(m) + ":" + pad(s);
 
-    totalSeconds--;
   }, 1000);
 }
 
